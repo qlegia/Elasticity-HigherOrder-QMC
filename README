@@ -1,0 +1,119 @@
+Project: Elasticty-HigherOrder-QMC
+Author: Quoc Thong Le Gia, UNSW, Sydney, Australia.
+Description:
+  Solving the elasticity equation on 2D domain in which the Lame coefficients
+are random, can be expressed in terms of Karhunen–Loève expansion.
+
+
+need to install ~/hdrive/pyQMC_test/pyQMC-master.zip
+conda activate fenicsx-env
+python3 par_elas_qmc.py pp qq   # using pp-th qmc point, qq partition
+        each qq-th partition contains 256 qmc_q points
+
+par_elas_qmc.py: compute the solution for the elasticity with N^2 = (2048)^2 points 
+   the full grid soln is computed by f_qmc0.pbs to f_qmc121.pbs
+  
+gen_e_pbs.py: generate 1 pbs script for 1 qmc-p point for N=1024 points 
+gen_e_pbs2.py: generate 1 pbs script for 1 qmc-p point for N=2048 points 
+
+gen_all_pbs.py: generate all pbs scripts for qmc-p =1,..,1024
+  #  python gen_all_pbs.py > script_all_pbs.sh
+  #  source script_all_pbs.sh
+  after that, we have qmc0.pbs to qmc49.pbs in the directory
+
+gen_all_pbs2.py: generate all pbs scripts for qmc-p =1,..,2048
+  #  python gen_all_pbs2.py > script_all_pbs.sh
+  #  source script_all_pbs.sh
+  after that, we have f_qmc0.pbs to f_qmc102.pbs in the directory
+
+gen_sh.py:
+   #  python gen_sh.py > qsub_all.sh
+   #  source qsub_all.sh
+
+gen_sh2.py: to submit all pbs script for N=2048
+   #  python gen_sh2.py > qsub_all.sh
+   #  source qsub_all.sh
+
+load_res.py: loading pre-computed results for N=1024 to get the
+   reference solution, full grid
+
+------------------------------------------------------------------------------
+For sparse-grid algorithm
+
+sparse_qmc.py: sparse grid sum, the 1st term
+   usage: python3 sparse_qmc L k q 
+      compute 
+        SN = 2^L Q_{N^{L-k,k}} = sum_{j=1}^{L-k} sum_{i=1}^k calF(p(j), q(i))
+       q: q-th partion of a partition into blocks of 256 qmc points
+
+sparse_qmc2.py: sparse grid sum, the 2nd term
+ compute
+   SN = 2^L Q_{N^{L-k,k-1}} 
+      = sum_{j=1}^{2^{L-k}} sum_{i=1}^{2^{k-1}} calF(p(j), q(i))
+ in partion qq for qq = 1,2,3,4 for L=10,
+
+sp_qmc.pbs: run sparse_qmc.py with L=10, k=0:10 
+  results for L=10 are stored as npz files in sp_resL10/
+
+sp_qmc2.pbs: run sparse_qmc2.py with L=10, k=1:10
+  results for L=10 are stored as npz files in sp_resL10_2/
+
+sp_qmcA.pbs: run sparse_qmc.py with L=11, k=0:11 
+  results for L=11 are stored as npz files in sp_resL11/
+
+sp_qmc2A.pbs: run sparse_qmc2.py with L=11, k=1:11 
+  results for L=11 are stored as npz files in sp_resL11_2/
+
+sp_qmcB.pbs: run sparse_qmc.py with L=11, k=0:12
+sp_qmc2B.pbs: run sparse_qmc.py with L=11, k=1:12
+
+load_sp_res.py: load pre-computed sparse sum for L=10
+    output files: sp_grid_L10.out  sp_grid_L11.out sp_grid_L12.out sp_grid_L13.out
+    err tables for L=9..13 is in sp_Ls_out.out
+
+gen_sp_pbs.py: for the first sum 
+    usage: python gen_sp_pbs.py 15 1  8 
+                                L  p1 p2
+          p1 is the first partion of step=256 qmc-points
+          p2 is the last partion for step=256 qmc-points
+
+gen_sp_pbs2.py: for the second sum
+    usage: python gen_sp_pbs2.py 15 1 8 
+
+gen_all_sp.py:
+    # generate all pbs scripts using gen_sp_pbs
+    # usage:
+    #  python gen_all_sp.py > all_sp_pbs.sh
+    #  source all_sp_pbs.sh 
+ then we obtain sL13_qmc0.pbs  sL13_qmc1.pbs  
+                sL13_qmc2.pbs  sL13_qmc3.pbs
+ then we obtain s_qmc0.pbs to s_qmc15.pbs
+
+gen_all_sp2.py
+   # generate all pbs scripts using gen_sp_pbs2
+   # usage:
+   #  python gen_all_sp2.py > all_sp_pbs2.sh
+   #  source all_sp_pbs2.sh
+ then we obtain s2L13_qmc0.pbs  s2L13_qmc1.pbs  
+                s2L13_qmc2.pbs  s2L13_qmc3.pbs
+ then we obtain s2_qmc0.pbs to s2_qmc15.pbs
+
+gen_s_qmc.py: 
+   python gen_s_qmc.py > qsub_all_sp.sh
+   #  source qsub_all_sp.sh
+
+mv_sp_res.py
+   moving files to correct dirs
+usage: python mv_sp_res.py > mv_L12.sh
+       mv_L13.sh  moving est*.npz files to sp_resL13/ and sp_resL13_2/
+       mv_L14.sh, mv_L15.sh
+gen_s2_qmc.py (obsolete)
+  # usage
+#  python gen_s2_qmc.py > qsub_all_sp2.sh
+#  source qsub_all_sp2.sh
+
+
+  
+sparse_qmc_old.py : does not work 
+load_sp_resA.py: load pre-computed sparse sum for L=11 (obsolete)
+ 
