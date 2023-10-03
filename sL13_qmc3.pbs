@@ -1,0 +1,20 @@
+#!/bin/bash 
+#PBS -N E_p25_32 
+#PBS -l select=1:ncpus=2:mem=60gb 
+#PBS -l walltime=24:00:00 
+#PBS -m ae 
+#PBS -M qlegia@unsw.edu.au 
+#PBS -J 0-13 
+
+cd /home/z9701564/ElasticityQMC 
+echo 'I am now working on job ${PBS_ARRAY_INDEX}' 
+conda init bash
+source activate fenicsx-env
+python3 sparse_qmc.py 13 ${PBS_ARRAY_INDEX} 25
+python3 sparse_qmc.py 13 ${PBS_ARRAY_INDEX} 26
+python3 sparse_qmc.py 13 ${PBS_ARRAY_INDEX} 27
+python3 sparse_qmc.py 13 ${PBS_ARRAY_INDEX} 28
+python3 sparse_qmc.py 13 ${PBS_ARRAY_INDEX} 29
+python3 sparse_qmc.py 13 ${PBS_ARRAY_INDEX} 30
+python3 sparse_qmc.py 13 ${PBS_ARRAY_INDEX} 31
+python3 sparse_qmc.py 13 ${PBS_ARRAY_INDEX} 32
