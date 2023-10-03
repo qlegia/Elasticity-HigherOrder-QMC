@@ -1,0 +1,16 @@
+python gen_sp_pbs2.py 14 1 4 > s2L14_qmc0.pbs
+python gen_sp_pbs2.py 14 5 8 > s2L14_qmc1.pbs
+python gen_sp_pbs2.py 14 9 12 > s2L14_qmc2.pbs
+python gen_sp_pbs2.py 14 13 16 > s2L14_qmc3.pbs
+python gen_sp_pbs2.py 14 17 20 > s2L14_qmc4.pbs
+python gen_sp_pbs2.py 14 21 24 > s2L14_qmc5.pbs
+python gen_sp_pbs2.py 14 25 28 > s2L14_qmc6.pbs
+python gen_sp_pbs2.py 14 29 32 > s2L14_qmc7.pbs
+python gen_sp_pbs2.py 14 33 36 > s2L14_qmc8.pbs
+python gen_sp_pbs2.py 14 37 40 > s2L14_qmc9.pbs
+python gen_sp_pbs2.py 14 41 44 > s2L14_qmc10.pbs
+python gen_sp_pbs2.py 14 45 48 > s2L14_qmc11.pbs
+python gen_sp_pbs2.py 14 49 52 > s2L14_qmc12.pbs
+python gen_sp_pbs2.py 14 53 56 > s2L14_qmc13.pbs
+python gen_sp_pbs2.py 14 57 60 > s2L14_qmc14.pbs
+python gen_sp_pbs2.py 14 61 64 > s2L14_qmc15.pbs
