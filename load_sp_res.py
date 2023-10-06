@@ -39,7 +39,7 @@ SS = 0.0
 cnt = 0
 Q = 0.0
 print('L = ',L)
-for k in range(0,L+1):
+for k in range(0,L):
     N1 = 2**(L-k)  # LL=10 so LL-kk=9,8,7,6,5,4,3,2,1
     N2 = 2**k #                    k=1,2,3,4,5,6,7,8,9 
     N2b = 2**(k-1)
@@ -62,5 +62,6 @@ for k in range(0,L+1):
 print('Q = ', Q, 'err =', np.abs(Q-Qfull))
 # for the table in the paper
 err= np.abs(Q-Qfull)
-upper = 2**(2-L)*L
+#upper = 2**(2-L)*L
+upper = L*4**(1-L) + L*4**(1-L)
 print(f'{L:2d} {err:9.4e} {upper:9.4e}')
